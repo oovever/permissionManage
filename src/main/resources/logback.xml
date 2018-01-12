@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--配置文件发生改变，将会重新加载，配置文件修改的时间间隔-->
+<configuration scan="true" scanPeriod="60 seconds">
+<!--定义log的输出形式-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--年月日 时分秒，毫秒-->
+            <!--当前的进程 日志的级别 从左显示5个字符宽度 主要用于对齐日志-->
+            <!--日志名称 日志信息 换行-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--<appender name="permission" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--&lt;!&ndash;日志名称&ndash;&gt;-->
+        <!--&lt;!&ndash;日志位置&ndash;&gt;-->
+        <!--&lt;!&ndash;{catalina.home}Tomcat的主路径&ndash;&gt;-->
+        <!--<file>${catalina.home}/logs/permission.log</file>-->
+        <!--&lt;!&ndash;文件压缩的规则&ndash;&gt;-->
+        <!--&lt;!&ndash;根据时间压缩&ndash;&gt;-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--&lt;!&ndash;压缩的名称&ndash;&gt;-->
+            <!--<FileNamePattern>${catalina.home}/logs/permission.%d{yyyy-MM-dd}.log.gz</FileNamePattern>-->
+        <!--</rollingPolicy>-->
+        <!--&lt;!&ndash;展示日志的样子&ndash;&gt;-->
+        <!--<layout class="ch.qos.logback.classic.PatternLayout">-->
+            <!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>-->
+        <!--</layout>-->
+    <!--</appender>-->
+
+    <!--<logger name="xxx" level="INFO">-->
+        <!--<appender-ref ref="permission"/>-->
+    <!--</logger>-->
+
+    <!-- TRACE < DEBUG < INFO < WARN < ERROR -->
+    <!--使用什么级别输出日志-->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>
