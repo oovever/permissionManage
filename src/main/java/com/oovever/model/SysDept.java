@@ -1,7 +1,12 @@
 package com.oovever.model;
 
-import java.util.Date;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.Date;
+@Data
+@Builder
 public class SysDept {
     private Integer id;
 
