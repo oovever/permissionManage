@@ -3,6 +3,9 @@ package com.oovever.common;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * JSON返回结构
  * @author OovEver
@@ -62,5 +65,17 @@ public class JsonData {
         JsonData jsonData = new JsonData(false);
         jsonData.msg = msg;
         return jsonData;
+    }
+
+    /**
+     * 保持异常结果与正常结果返回一致
+     * @return jsondata的toString方法
+     */
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        result.put("ret", ret);
+        result.put("msg", msg);
+        result.put("data", data);
+        return result;
     }
 }
