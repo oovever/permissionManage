@@ -216,3 +216,10 @@
   * 表字符集选择UTF-8
 
   ![这里写图片描述](http://img.blog.csdn.net/20180111231437919?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbXVwZW5nZmVpNjY4OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+* 权限管理开发--工具相关
+
+  * 校验工具--validator
+  * Json转化工具--jackson convert
+  * 获取Spring上下文--applicationContext
+  * Http请求前后监听--interceptor
