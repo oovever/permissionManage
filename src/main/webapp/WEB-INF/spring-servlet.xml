@@ -12,6 +12,9 @@
     <!-- 启动包扫描功能 -->
     <context:component-scan base-package="com.oovever.controller" />
     <context:component-scan base-package="com.oovever.service" />
+
+<!--spring上下文工具获取类-->
+    <bean class="com.oovever.common.ApplicationContextHelper" lazy-init="false" />
     <!--把定义好的requestmapping注解，使用什么样的代码处理-->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
     <!--全局异常-->

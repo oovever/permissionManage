@@ -1,11 +1,16 @@
 package com.oovever.controller;
 
+import com.oovever.common.ApplicationContextHelper;
 import com.oovever.common.JsonData;
+import com.oovever.dao.SysAclModuleMapper;
 import com.oovever.dao.TestDao;
 import com.oovever.exception.PermissionException;
+import com.oovever.model.SysAclModule;
 import com.oovever.param.TestVo;
 import com.oovever.util.BeanValidator;
+import com.oovever.util.JsonMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +36,10 @@ public class TestController {
     @ResponseBody
     public JsonData validate(TestVo vo) {
         log.info("vo");
+        SysAclModuleMapper moduleMapper = ApplicationContextHelper.popBean(SysAclModuleMapper.class);
+        SysAclModule module = moduleMapper.selectByPrimaryKey(1);
+        log.info(JsonMapper.obj2String(module));
+
 //        throw new PermissionException("test exception");
         try {
             Map<String, String> map = BeanValidator.validate(vo);
