@@ -31,7 +31,7 @@ public class SysDeptController {
      * 进入页面接口
      * @return 页面
      */
-    @RequestMapping("/page.json")
+    @RequestMapping("/dept.page")
     public ModelAndView page() {
         return new ModelAndView("dept");
     }
