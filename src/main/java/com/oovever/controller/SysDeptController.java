@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,6 +26,15 @@ public class SysDeptController {
     private SysDeptService sysDeptService;
     @Resource
     private SysTreeService sysTreeService;
+
+    /**
+     * 进入页面接口
+     * @return 页面
+     */
+    @RequestMapping("/page.json")
+    public ModelAndView page() {
+        return new ModelAndView("dept");
+    }
     /**
      * 保存部门信息
      * @param param 参数信息
