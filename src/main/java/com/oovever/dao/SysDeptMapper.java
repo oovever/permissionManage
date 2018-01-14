@@ -2,6 +2,8 @@ package com.oovever.dao;
 
 import com.oovever.model.SysDept;
 
+import java.util.List;
+
 public interface SysDeptMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface SysDeptMapper {
     int updateByPrimaryKeySelective(SysDept record);
 
     int updateByPrimaryKey(SysDept record);
+//    返回所有部门列表
+    List<SysDept> getAllDept();
 }

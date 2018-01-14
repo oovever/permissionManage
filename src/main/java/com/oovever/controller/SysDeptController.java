@@ -1,14 +1,17 @@
 package com.oovever.controller;
 
 import com.oovever.common.JsonData;
+import com.oovever.dto.DeptLevelDto;
 import com.oovever.param.DeptParam;
 import com.oovever.service.SysDeptService;
+import com.oovever.service.SysTreeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author OovEver
@@ -20,6 +23,8 @@ import javax.annotation.Resource;
 public class SysDeptController {
     @Resource
     private SysDeptService sysDeptService;
+    @Resource
+    private SysTreeService sysTreeService;
     /**
      * 保存部门信息
      * @param param 参数信息
@@ -30,5 +35,16 @@ public class SysDeptController {
     public JsonData saveDept(DeptParam param) {
         sysDeptService.save(param);
         return JsonData.success();
+    }
+
+    /**
+     * 部门树请求
+     * @return 部门树
+     */
+    @RequestMapping("/tree.json")
+    @ResponseBody
+    public JsonData tree() {
+        List<DeptLevelDto> dtoList = sysTreeService.deptTree();
+        return JsonData.success(dtoList);
     }
 }
