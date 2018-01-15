@@ -167,7 +167,7 @@
     WHERE telephone = #{keyword}
     OR mail = #{keyword}
   </select>
-  <select id="countByMail" parameterType="map" resultType="int">
+  <select id="countByMail" parameterType="map" resultType="java.lang.Integer">
     SELECT count(1)
     FROM sys_user
     WHERE mail = #{mail}
@@ -176,12 +176,26 @@
     </if>
   </select>
 
-  <select id="countByTelephone" parameterType="map" resultType="int">
+  <select id="countByTelephone" parameterType="map" resultType="java.lang.Integer">
     SELECT count(1)
     FROM sys_user
     WHERE telephone = #{telephone}
     <if test="id != null">
       AND id != #{id}
     </if>
+  </select>
+
+  <select id="countByDeptId" parameterType="int" resultType="java.lang.Integer">
+    SELECT count(1)
+    FROM sys_user
+    WHERE dept_id = #{deptId}
+  </select>
+
+  <select id="getPageByDeptId" parameterType="map" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" />
+    FROM sys_user
+    WHERE dept_id = #{deptId}
+    ORDER BY username ASC
+    LIMIT #{page.offset}, #{page.pageSize}
   </select>
 </mapper>

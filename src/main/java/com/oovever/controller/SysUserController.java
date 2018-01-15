@@ -1,10 +1,14 @@
 package com.oovever.controller;
 
+import com.oovever.beans.PageQuery;
+import com.oovever.beans.PageResult;
 import com.oovever.common.JsonData;
+import com.oovever.model.SysUser;
 import com.oovever.param.UserParam;
 import com.oovever.service.SysUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -40,5 +44,15 @@ public class SysUserController {
     public JsonData updateUser(UserParam param) {
         sysUserService.update(param);
         return JsonData.success();
+    }
+    @RequestMapping("/page.json")
+    @ResponseBody
+    /**
+     * 分页展示功能
+     *
+     */
+    public JsonData page(@RequestParam("deptId") int deptId, PageQuery pageQuery) {
+        PageResult<SysUser> result = sysUserService.getPageByDeptId(deptId, pageQuery);
+        return JsonData.success(result);
     }
 }

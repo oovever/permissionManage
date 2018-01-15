@@ -1,6 +1,8 @@
 package com.oovever.service;
 
 import com.google.common.base.Preconditions;
+import com.oovever.beans.PageQuery;
+import com.oovever.beans.PageResult;
 import com.oovever.dao.SysUserMapper;
 import com.oovever.exception.ParamException;
 import com.oovever.model.SysUser;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author OovEver
@@ -95,5 +98,21 @@ public class SysUserService {
      */
     public SysUser findByKeyword(String keyword) {
         return sysUserMapper.findByKeyword(keyword);
+    }
+
+    /**
+     * 返回部门用户分页查询结果
+     * @param deptId 部门id
+     * @param page 分页查询参数
+     * @return 部门下的用户分页查询结果
+     */
+    public PageResult<SysUser> getPageByDeptId(int deptId, PageQuery page) {
+        BeanValidator.check(page);
+        int count = sysUserMapper.countByDeptId(deptId);
+        if (count > 0) {
+            List<SysUser> list = sysUserMapper.getPageByDeptId(deptId, page);
+            return PageResult.<SysUser>builder().total(count).data(list).build();
+        }
+        return PageResult.<SysUser>builder().build();
     }
 }
