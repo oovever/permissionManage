@@ -75,7 +75,7 @@ public class SysUserService {
      * @return 返回email是否存在
      */
     public boolean checkEmailExist(String mail, Integer userId) {
-        return false;
+        return sysUserMapper.countByMail(mail, userId) > 0;
     }
 
     /**
@@ -85,6 +85,15 @@ public class SysUserService {
      * @return 返回电话是否存在
      */
     public boolean checkTelephoneExist(String telephone, Integer userId) {
-        return false;
+        return sysUserMapper.countByTelephone(telephone, userId) > 0;
+    }
+
+    /**
+     * 查询用户名是否存在
+     * @param keyword 用户名
+     * @return 返回是否存在
+     */
+    public SysUser findByKeyword(String keyword) {
+        return sysUserMapper.findByKeyword(keyword);
     }
 }
