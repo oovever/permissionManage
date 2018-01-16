@@ -78,4 +78,14 @@
   </welcome-file-list>
 
 
+  <filter>
+    <filter-name>loginFilter</filter-name>
+    <filter-class>com.oovever.filter.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <!--只对sys与admin请求做登录校验-->
+    <filter-name>loginFilter</filter-name>
+    <url-pattern>/sys/*</url-pattern>
+    <url-pattern>/admin/*</url-pattern>
+  </filter-mapping>
 </web-app>

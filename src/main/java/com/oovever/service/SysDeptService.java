@@ -1,6 +1,7 @@
 package com.oovever.service;
 
 import com.google.common.base.Preconditions;
+import com.oovever.common.RequestHolder;
 import com.oovever.dao.SysDeptMapper;
 import com.oovever.exception.ParamException;
 import com.oovever.model.SysDept;
@@ -39,7 +40,7 @@ public class SysDeptService {
                 .seq(param.getSeq()).remark(param.getRemark()).build();
         dept.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId()));
 //        TODO 操作者
-        dept.setOperator("system");
+        dept.setOperator(RequestHolder.getCurrentUser().getUsername());
 //        TODO 操作者IP
         dept.setOperateIp("127.0.0.1");
 //        操作时间
@@ -92,7 +93,7 @@ public class SysDeptService {
                 .seq(param.getSeq()).remark(param.getRemark()).build();
         after.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId()));
         //        TODO 操作者
-        after.setOperator("system");
+        after.setOperator(RequestHolder.getCurrentUser().getUsername());
 //        TODO 操作者IP
         after.setOperateIp("127.0.0.1");
 //        操作时间

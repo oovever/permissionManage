@@ -5,6 +5,9 @@ import com.oovever.model.SysUser;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 使用ThreadLocal用于用户登录，防止并发过程中登录冲突
+ */
 public class RequestHolder {
 
     private static final ThreadLocal<SysUser> userHolder = new ThreadLocal<SysUser>();
@@ -27,6 +30,9 @@ public class RequestHolder {
         return requestHolder.get();
     }
 
+    /**
+     * 移除local
+     */
     public static void remove() {
         userHolder.remove();
         requestHolder.remove();

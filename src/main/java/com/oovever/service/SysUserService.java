@@ -3,6 +3,7 @@ package com.oovever.service;
 import com.google.common.base.Preconditions;
 import com.oovever.beans.PageQuery;
 import com.oovever.beans.PageResult;
+import com.oovever.common.RequestHolder;
 import com.oovever.dao.SysUserMapper;
 import com.oovever.exception.ParamException;
 import com.oovever.model.SysUser;
@@ -42,7 +43,7 @@ public class SysUserService {
         String encryptedPassword = MD5Util.encrypt(password);
         SysUser user = SysUser.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail())
                 .password(encryptedPassword).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
-        user.setOperator("system");//TODO
+        user.setOperator(RequestHolder.getCurrentUser().getUsername());
         user.setOperateIp("127.0.0.1");//TODO
         user.setOperateTime(new Date());
         // TODO: sendEmail
@@ -66,7 +67,7 @@ public class SysUserService {
         Preconditions.checkNotNull(before, "待更新的用户不存在");
         SysUser after = SysUser.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail())
                 .deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
-        after.setOperator("system");//TODO
+        after.setOperator(RequestHolder.getCurrentUser().getUsername());
         after.setOperateIp("127.0.0.1");//TODO);
         after.setOperateTime(new Date());
         sysUserMapper.updateByPrimaryKeySelective(after);
