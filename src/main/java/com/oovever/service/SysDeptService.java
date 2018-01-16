@@ -7,6 +7,7 @@ import com.oovever.exception.ParamException;
 import com.oovever.model.SysDept;
 import com.oovever.param.DeptParam;
 import com.oovever.util.BeanValidator;
+import com.oovever.util.IpUtil;
 import com.oovever.util.LevelUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -39,10 +40,8 @@ public class SysDeptService {
         SysDept dept = SysDept.builder().name(param.getName()).parentId(param.getParentId())
                 .seq(param.getSeq()).remark(param.getRemark()).build();
         dept.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId()));
-//        TODO 操作者
         dept.setOperator(RequestHolder.getCurrentUser().getUsername());
-//        TODO 操作者IP
-        dept.setOperateIp("127.0.0.1");
+        dept.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
 //        操作时间
         dept.setOperateTime(new Date());
 //        保存方法
@@ -95,7 +94,7 @@ public class SysDeptService {
         //        TODO 操作者
         after.setOperator(RequestHolder.getCurrentUser().getUsername());
 //        TODO 操作者IP
-        after.setOperateIp("127.0.0.1");
+        after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
 //        操作时间
         after.setOperateTime(new Date());
 

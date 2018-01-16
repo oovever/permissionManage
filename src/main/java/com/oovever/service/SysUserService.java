@@ -9,6 +9,7 @@ import com.oovever.exception.ParamException;
 import com.oovever.model.SysUser;
 import com.oovever.param.UserParam;
 import com.oovever.util.BeanValidator;
+import com.oovever.util.IpUtil;
 import com.oovever.util.MD5Util;
 import com.oovever.util.PasswordUtil;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class SysUserService {
         SysUser user = SysUser.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail())
                 .password(encryptedPassword).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         user.setOperator(RequestHolder.getCurrentUser().getUsername());
-        user.setOperateIp("127.0.0.1");//TODO
+        user.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         user.setOperateTime(new Date());
         // TODO: sendEmail
         sysUserMapper.insertSelective(user);
@@ -68,7 +69,8 @@ public class SysUserService {
         SysUser after = SysUser.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail())
                 .deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         after.setOperator(RequestHolder.getCurrentUser().getUsername());
-        after.setOperateIp("127.0.0.1");//TODO);
+//        去除操作人ip
+        after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         after.setOperateTime(new Date());
         sysUserMapper.updateByPrimaryKeySelective(after);
     }
