@@ -2,6 +2,7 @@ package com.oovever.dao;
 
 import com.oovever.model.SysLog;
 import com.oovever.model.SysLogWithBLOBs;
+import org.apache.ibatis.annotations.Param;
 
 public interface SysLogMapper {
     int deleteByPrimaryKey(Integer id);
@@ -17,4 +18,5 @@ public interface SysLogMapper {
     int updateByPrimaryKeyWithBLOBs(SysLogWithBLOBs record);
 
     int updateByPrimaryKey(SysLog record);
+
 }
