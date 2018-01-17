@@ -3,8 +3,10 @@ package com.oovever.controller;
 import com.oovever.common.JsonData;
 import com.oovever.param.RoleParam;
 import com.oovever.service.SysRoleService;
+import com.oovever.service.SysTreeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,7 +21,8 @@ import javax.annotation.Resource;
 public class SysRoleController {
     @Resource
     private SysRoleService sysRoleService;
-
+    @Resource
+    private SysTreeService sysTreeService;
     /**
      *
      * @return 返回角色管理界面
@@ -53,5 +56,16 @@ public class SysRoleController {
     @ResponseBody
     public JsonData list() {
         return JsonData.success(sysRoleService.getAll());
+    }
+
+    /**
+     *
+     * @param roleId 角色id
+     * @return 返回角色树
+     */
+    @RequestMapping("/roleTree.json")
+    @ResponseBody
+    public JsonData roleTree(@RequestParam("roleId") int roleId) {
+        return JsonData.success(sysTreeService.roleTree(roleId));
     }
 }
