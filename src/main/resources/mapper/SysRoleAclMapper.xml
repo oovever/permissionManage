@@ -103,7 +103,7 @@
       operate_ip = #{operateIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="getAclIdListByRoleIdList" parameterType="map" resultType="int">
+  <select id="getAclIdListByRoleIdList" parameterType="map" resultType="java.lang.Integer">
     SELECT acl_id
     FROM sys_role_acl
     WHERE role_id in
@@ -111,4 +111,16 @@
       #{roleId}
     </foreach>
   </select>
+  <delete id="deleteByRoleId" parameterType="int">
+    DELETE FROM sys_role_acl
+    WHERE role_id = #{roleId}
+  </delete>
+
+  <insert id="batchInsert" parameterType="map">
+    insert into sys_role_acl (role_id, acl_id, operator, operate_time, operate_ip)
+    values
+    <foreach collection="roleAclList" item="roleAcl" separator=",">
+      (#{roleAcl.roleId}, #{roleAcl.aclId}, #{roleAcl.operator}, #{roleAcl.operateTime}, #{roleAcl.operateIp})
+    </foreach>
+  </insert>
 </mapper>

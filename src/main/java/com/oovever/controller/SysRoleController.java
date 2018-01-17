@@ -2,8 +2,8 @@ package com.oovever.controller;
 
 import com.oovever.common.JsonData;
 import com.oovever.param.RoleParam;
-import com.oovever.service.SysRoleService;
-import com.oovever.service.SysTreeService;
+import com.oovever.service.*;
+import com.oovever.util.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author OovEver
@@ -20,9 +21,15 @@ import javax.annotation.Resource;
 @RequestMapping("/sys/role")
 public class SysRoleController {
     @Resource
-    private SysRoleService sysRoleService;
+    private SysRoleService     sysRoleService;
     @Resource
-    private SysTreeService sysTreeService;
+    private SysTreeService     sysTreeService;
+    @Resource
+    private SysRoleAclService  sysRoleAclService;
+    @Resource
+    private SysRoleUserService sysRoleUserService;
+    @Resource
+    private SysUserService     sysUserService;
     /**
      *
      * @return 返回角色管理界面
@@ -67,5 +74,12 @@ public class SysRoleController {
     @ResponseBody
     public JsonData roleTree(@RequestParam("roleId") int roleId) {
         return JsonData.success(sysTreeService.roleTree(roleId));
+    }
+    @RequestMapping("/changeAcls.json")
+    @ResponseBody
+    public JsonData changeAcls(@RequestParam("roleId") int roleId, @RequestParam(value = "aclIds", required = false, defaultValue = "") String aclIds) {
+        List<Integer> aclIdList = StringUtil.splitToListInt(aclIds);
+        sysRoleAclService.changeRoleAcls(roleId, aclIdList);
+        return JsonData.success();
     }
 }
