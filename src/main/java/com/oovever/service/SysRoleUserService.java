@@ -2,13 +2,16 @@ package com.oovever.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.oovever.beans.LogType;
 import com.oovever.common.RequestHolder;
 import com.oovever.dao.SysLogMapper;
 import com.oovever.dao.SysRoleUserMapper;
 import com.oovever.dao.SysUserMapper;
+import com.oovever.model.SysLogWithBLOBs;
 import com.oovever.model.SysRoleUser;
 import com.oovever.model.SysUser;
 import com.oovever.util.IpUtil;
+import com.oovever.util.JsonMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +52,7 @@ public class SysRoleUserService {
             }
         }
         updateRoleUsers(roleId, userIdList);
+        saveRoleUserLog(roleId, originUserIdList, userIdList);
     }
     @Transactional
      void updateRoleUsers(int roleId, List<Integer> userIdList) {
@@ -65,5 +69,16 @@ public class SysRoleUserService {
         }
         sysRoleUserMapper.batchInsert(roleUserList);
     }
-
+    private void saveRoleUserLog(int roleId, List<Integer> before, List<Integer> after) {
+        SysLogWithBLOBs sysLog = new SysLogWithBLOBs();
+        sysLog.setType(LogType.TYPE_ROLE_USER);
+        sysLog.setTargetId(roleId);
+        sysLog.setOldValue(before == null ? "" : JsonMapper.obj2String(before));
+        sysLog.setNewValue(after == null ? "" : JsonMapper.obj2String(after));
+        sysLog.setOperator(RequestHolder.getCurrentUser().getUsername());
+        sysLog.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
+        sysLog.setOperateTime(new Date());
+        sysLog.setStatus(1);
+        sysLogMapper.insertSelective(sysLog);
+    }
 }

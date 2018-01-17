@@ -2,10 +2,14 @@ package com.oovever.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.oovever.beans.LogType;
 import com.oovever.common.RequestHolder;
+import com.oovever.dao.SysLogMapper;
 import com.oovever.dao.SysRoleAclMapper;
+import com.oovever.model.SysLogWithBLOBs;
 import com.oovever.model.SysRoleAcl;
 import com.oovever.util.IpUtil;
+import com.oovever.util.JsonMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +27,8 @@ import java.util.Set;
 public class SysRoleAclService {
     @Resource
     private SysRoleAclMapper sysRoleAclMapper;
-
+    @Resource
+    private SysLogMapper     sysLogMapper;
 
     public void changeRoleAcls(Integer roleId, List<Integer> aclIdList) {
         List<Integer> originAclIdList = sysRoleAclMapper.getAclIdListByRoleIdList(Lists.newArrayList(roleId));
@@ -36,6 +41,7 @@ public class SysRoleAclService {
             }
         }
         updateRoleAcls(roleId, aclIdList);
+        saveRoleAclLog(roleId, originAclIdList, aclIdList);
     }
     @Transactional
     public void updateRoleAcls(int roleId, List<Integer> aclIdList) {
@@ -52,6 +58,17 @@ public class SysRoleAclService {
         }
         sysRoleAclMapper.batchInsert(roleAclList);
     }
-
+    private void saveRoleAclLog(int roleId, List<Integer> before, List<Integer> after) {
+        SysLogWithBLOBs sysLog = new SysLogWithBLOBs();
+        sysLog.setType(LogType.TYPE_ROLE_ACL);
+        sysLog.setTargetId(roleId);
+        sysLog.setOldValue(before == null ? "" : JsonMapper.obj2String(before));
+        sysLog.setNewValue(after == null ? "" : JsonMapper.obj2String(after));
+        sysLog.setOperator(RequestHolder.getCurrentUser().getUsername());
+        sysLog.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
+        sysLog.setOperateTime(new Date());
+        sysLog.setStatus(1);
+        sysLogMapper.insertSelective(sysLog);
+    }
 
 }

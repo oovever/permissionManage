@@ -26,7 +26,8 @@ import java.util.List;
 public class SysUserService {
     @Resource
     private SysUserMapper sysUserMapper;
-
+    @Resource
+    private SysLogService sysLogService;
     /**
      * 新增用户service
      * @param param 新增用户参数
@@ -49,6 +50,7 @@ public class SysUserService {
         user.setOperateTime(new Date());
         // TODO: sendEmail
         sysUserMapper.insertSelective(user);
+        sysLogService.saveUserLog(null, user);
 
     }
 
@@ -73,6 +75,7 @@ public class SysUserService {
         after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         after.setOperateTime(new Date());
         sysUserMapper.updateByPrimaryKeySelective(after);
+        sysLogService.saveUserLog(before, after);
     }
     /**
      *检查email是否存在

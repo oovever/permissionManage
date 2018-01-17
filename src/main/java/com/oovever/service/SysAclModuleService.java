@@ -30,6 +30,8 @@ public class SysAclModuleService {
     private SysAclModuleMapper sysAclModuleMapper;
     @Resource
     private SysAclMapper       sysAclMapper;
+    @Resource
+    private SysLogService sysLogService;
     /**
      * 保存权限模块
      * @param param 权限模块参数
@@ -47,6 +49,7 @@ public class SysAclModuleService {
         aclModule.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         aclModule.setOperateTime(new Date());
         sysAclModuleMapper.insertSelective(aclModule);
+        sysLogService.saveAclModuleLog(null, aclModule);
     }
 
     /**
@@ -69,6 +72,7 @@ public class SysAclModuleService {
         after.setOperateTime(new Date());
 
         updateWithChild(before, after);
+        sysLogService.saveAclModuleLog(before, after);
     }
 
     /**
