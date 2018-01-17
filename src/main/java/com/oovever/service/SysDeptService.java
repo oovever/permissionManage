@@ -3,6 +3,7 @@ package com.oovever.service;
 import com.google.common.base.Preconditions;
 import com.oovever.common.RequestHolder;
 import com.oovever.dao.SysDeptMapper;
+import com.oovever.dao.SysUserMapper;
 import com.oovever.exception.ParamException;
 import com.oovever.model.SysDept;
 import com.oovever.param.DeptParam;
@@ -26,6 +27,8 @@ import java.util.List;
 public class SysDeptService {
     @Resource
     private SysDeptMapper sysDeptMapper;
+    @Resource
+    private SysUserMapper sysUserMapper;
 
     /**
      * 保存部门
@@ -127,5 +130,16 @@ public class SysDeptService {
             }
         }
         sysDeptMapper.updateByPrimaryKey(after);
+    }
+    public void delete(int deptId) {
+        SysDept dept = sysDeptMapper.selectByPrimaryKey(deptId);
+        Preconditions.checkNotNull(dept, "待删除的部门不存在，无法删除");
+        if (sysDeptMapper.countByParentId(dept.getId()) > 0) {
+            throw new ParamException("当前部门下面有子部门，无法删除");
+        }
+        if(sysUserMapper.countByDeptId(dept.getId()) > 0) {
+            throw new ParamException("当前部门下面有用户，无法删除");
+        }
+        sysDeptMapper.deleteByPrimaryKey(deptId);
     }
 }

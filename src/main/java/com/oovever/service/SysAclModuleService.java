@@ -3,6 +3,7 @@ package com.oovever.service;
 
 import com.google.common.base.Preconditions;
 import com.oovever.common.RequestHolder;
+import com.oovever.dao.SysAclMapper;
 import com.oovever.dao.SysAclModuleMapper;
 import com.oovever.exception.ParamException;
 import com.oovever.model.SysAclModule;
@@ -27,6 +28,8 @@ import java.util.List;
 public class SysAclModuleService {
     @Resource
     private SysAclModuleMapper sysAclModuleMapper;
+    @Resource
+    private SysAclMapper       sysAclMapper;
     /**
      * 保存权限模块
      * @param param 权限模块参数
@@ -115,5 +118,16 @@ public class SysAclModuleService {
             return null;
         }
         return aclModule.getLevel();
+    }
+    public void delete(int aclModuleId) {
+        SysAclModule aclModule = sysAclModuleMapper.selectByPrimaryKey(aclModuleId);
+        Preconditions.checkNotNull(aclModule, "待删除的权限模块不存在，无法删除");
+        if(sysAclModuleMapper.countByParentId(aclModule.getId()) > 0) {
+            throw new ParamException("当前模块下面有子模块，无法删除");
+        }
+        if (sysAclMapper.countByAclModuleId(aclModule.getId()) > 0) {
+            throw new ParamException("当前模块下面有用户，无法删除");
+        }
+        sysAclModuleMapper.deleteByPrimaryKey(aclModuleId);
     }
 }

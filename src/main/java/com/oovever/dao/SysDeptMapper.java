@@ -26,4 +26,5 @@ public interface SysDeptMapper {
 
     //检查是否重复
     int countByNameAndParentId(@Param("parentId") Integer parentId, @Param("name") String name, @Param("id") Integer id);
+    int countByParentId(@Param("deptId") int deptId);
 }
